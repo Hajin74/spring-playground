@@ -13,15 +13,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LogDemoController {
 
     private final LogDemoService logDemoService;
-    private final ObjectProvider<MyLogger> myLoggerProvider;
+    private final MyLogger myLogger;
 
     @RequestMapping("log-demo")
     @ResponseBody
     public String logDemo(HttpServletRequest request) {
-        MyLogger myLogger = myLoggerProvider.getObject();
         String requestURI = request.getRequestURI();
 
-        myLogger.setRequestURL(requestURI);
+        System.out.println("myLogger = " + myLogger.getClass()); // 조작된 객체 찍힘
+
+        myLogger.setRequestURL(requestURI); // 이때 진짜가 동작
         myLogger.log("controller test");
         logDemoService.logic("testId");
 
