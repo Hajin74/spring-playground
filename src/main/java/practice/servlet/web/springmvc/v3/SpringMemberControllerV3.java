@@ -2,8 +2,7 @@ package practice.servlet.web.springmvc.v3;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import practice.servlet.domain.member.Member;
 import practice.servlet.domain.member.MemberRepository;
 
@@ -13,16 +12,16 @@ import java.util.List;
 @RequestMapping("/springmvc/v3/members")
 public class SpringMemberControllerV3 {
 
-    // Http Method가 구분안되는 버전
-
     private MemberRepository memberRepository = MemberRepository.getInstance();
 
-    @RequestMapping("/new-form")
+//    @RequestMapping(value = "/new-form", method = RequestMethod.GET)
+    @GetMapping("/new-form")
     public String newForm() {
         return "new-form";
     }
 
-    @RequestMapping("/save")
+//    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @PostMapping("/save")
     public String save(@RequestParam("username") String username, @RequestParam("age") int age, Model model) {
         Member member = new Member(username, age);
         memberRepository.save(member);
@@ -31,7 +30,8 @@ public class SpringMemberControllerV3 {
         return "save-result";
     }
 
-    @RequestMapping
+//    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String members(Model model) {
         List<Member> members = memberRepository.findAll();
         model.addAttribute("members", members);
