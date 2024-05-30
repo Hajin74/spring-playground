@@ -1,7 +1,9 @@
 package org.example.springsecurity.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -31,11 +34,14 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 );
 
+//        http
+//                .formLogin((auth) -> auth.loginPage("/login")
+//                        .loginProcessingUrl("/loginProc")
+//                        .permitAll()
+//                );
+
         http
-                .formLogin((auth) -> auth.loginPage("/login")
-                        .loginProcessingUrl("/loginProc")
-                        .permitAll()
-                );
+                .httpBasic(Customizer.withDefaults());
 
 //        http
 //                .csrf((auth) -> auth.disable());
@@ -52,22 +58,23 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-
-        UserDetails user1 = User.builder()
-                .username("user1")
-                .password(bCryptPasswordEncoder().encode("1234"))
-                .roles("ADMIN")
-                .build();
-
-        UserDetails user2 = User.builder()
-                .username("user2")
-                .password(bCryptPasswordEncoder().encode("1234"))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user1, user2);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        log.info("userDetailsService");
+//
+//        UserDetails user1 = User.builder()
+//                .username("user1")
+//                .password(bCryptPasswordEncoder().encode("1234"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        UserDetails user2 = User.builder()
+//                .username("user2")
+//                .password(bCryptPasswordEncoder().encode("1234"))
+//                .roles("USER")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user1, user2);
+//    }
 
 }

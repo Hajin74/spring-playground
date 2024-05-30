@@ -1,5 +1,6 @@
 package org.example.springsecurity.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.springsecurity.dto.JoinDto;
 import org.example.springsecurity.service.JoinService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @Controller
 public class JoinController {
 
@@ -16,6 +18,7 @@ public class JoinController {
     // 회원가입 페이지로 가기
     @GetMapping("/join")
     public String joinPage() {
+        log.info("go to join page");
         return "join";
     }
 
