@@ -1,5 +1,6 @@
 package hello.jdbc.connection;
 
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -30,6 +31,22 @@ public class ConnectionTest {
         // 즉, 설정과 사용을 분리했다.
         // 설정하는 곳에서만 속성에 의존하고, 사용하는 곳에서는 속성에 의존하지 않아도 된다.
         DataSource dataSource = new DriverManagerDataSource(URL, USERNAME, PASSWORD);
+        useDataSource(dataSource);
+    }
+
+    @Test
+    void dataSourceConnectionPool() throws SQLException {
+        // 커넥션 풀링
+        // HikariDataSource가 DataSource 인터페이스를 구현
+        // 커넥션 채우기는 별도의 스레드에서 이루어짐
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(URL);
+        dataSource.setUsername(USERNAME);
+        dataSource.setPassword(PASSWORD);
+        dataSource.setMaximumPoolSize(10);
+        dataSource.setPoolName("MyPool");
+
+        // 여기서 풀을 획득
         useDataSource(dataSource);
     }
 
